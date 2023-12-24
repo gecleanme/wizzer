@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,10 +23,10 @@ Route::get('/', function () {
     $apiKey = env('OPEN_WEATHER_KEY');
     $loc = "Amman";
     $weatherNow = Http::get("http://api.openweathermap.org/data/2.5/weather?q={$loc}&units=metric&appid={$apiKey}");
-    $weatherNextFive = Http::get("http://api.openweathermap.org/data/2.5/forecast/daily?q={$loc}&units=metric&cnt=5&appid={$apiKey}");
-    dump($weatherNow->json());
+    $weatherNextFiveRequest = Http::get("http://api.openweathermap.org/data/2.5/forecast?q={$loc}&units=metric&appid={$apiKey}");
+    $weatherNextFiveData = $weatherNextFiveRequest->json();
     return Inertia::render('Index',[
         'now' => $weatherNow->json(),
-        '5day' => $weatherNextFive->json()
+        'fiveDay' => $weatherNextFiveData['list']
     ]);
 });
