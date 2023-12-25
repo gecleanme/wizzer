@@ -50,8 +50,6 @@ function dtToShort (dt){
     let options = { weekday:'short',month: 'short', day: 'numeric' };
     return d.toLocaleDateString('en-US', options);
 }
-
-console.log(fiveDays)
 </script>
 
 <template>
@@ -60,7 +58,6 @@ console.log(fiveDays)
 
     <div
         class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200 ">
-
         <!-- Component Start -->
         <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
             <div class="flex justify-between">
@@ -87,7 +84,7 @@ console.log(fiveDays)
             >
                 <span class="font-semibold text-lg w-1/4">{{dtToShort(day.dt_txt)}}</span>
                 <div class="flex items-center justify-end w-1/4 pr-10">
-                    <span class="font-semibold">12%</span>
+                    <span class="font-semibold">{{day.main.humidity}}%</span>
                     <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1"
                          xmlns="http://www.w3.org/2000/svg">
                         <g transform="matrix(1,0,0,1,-4,-2)">
@@ -97,13 +94,9 @@ console.log(fiveDays)
                         </g>
                     </svg>
                 </div>
-                <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24"
-                     viewBox="0 0 24 24" width="24">
-                    <path d="M0 0h24v24H0V0z" fill="none"/>
-                    <path
-                        d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/>
-                </svg>
-                <span class="font-semibold text-lg w-1/4 text-right">18° / 32°</span>
+                <img :src="'https://openweathermap.org/img/wn/' + day.weather[0].icon + '.png'" alt="icon">
+
+                <span class="font-semibold text-lg w-1/4 text-right">{{ day.main.temp_min.toFixed(0) }}° / {{ day.main.temp_max.toFixed(0) }}°</span>
             </div>
         </div>
         <!-- Component End  -->
