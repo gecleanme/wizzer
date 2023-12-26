@@ -13,7 +13,7 @@ const props =defineProps({
     fiveDay: {
         type: Object,
         required: true,
-    },
+    }
 });
 const infoNow = computed(() => {
    return props.now.main;
@@ -58,21 +58,24 @@ function dtToShort (dt){
 onMounted(()=>{
     const autocomplete = new GeocoderAutocomplete(
         document.getElementById("autocomplete"),
-        '92566a4ec0fa4347a7536d01222cee48',
+        import.meta.env.VITE_GEOCODER_KEY,
         {
-            type:"state"
+            type:"city",
+            placeholder:"Enter a City/State Name"
         });
 
     autocomplete.on('select', (location) => {
-        // check selected location here
+        // inject query string and reload window
+        window.location.href = `?location=${(location.properties.address_line1)}`;
+        console.log(location)
     });
 
     autocomplete.on('suggestions', (suggestions) => {
         // process suggestions here
     });
 
-})
 
+})
 </script>
 
 <template>

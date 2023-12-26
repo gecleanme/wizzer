@@ -21,12 +21,21 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     $apiKey = env('OPEN_WEATHER_KEY');
-    $loc = "Amman";
+    $loc = request()->location ? request()->location :"Amman,Jordan";
     $weatherNow = Http::get("http://api.openweathermap.org/data/2.5/weather?q={$loc}&units=metric&appid={$apiKey}");
     $weatherNextFiveRequest = Http::get("http://api.openweathermap.org/data/2.5/forecast?q={$loc}&units=metric&appid={$apiKey}");
     $weatherNextFiveData = $weatherNextFiveRequest->json();
     return Inertia::render('Index',[
         'now' => $weatherNow->json(),
-        'fiveDay' => $weatherNextFiveData['list']
+        'fiveDay' => $weatherNextFiveData['list'],
+        'location' => $loc
     ]);
 });
+
+/*
+ * TODO:
+    -  Make Temp Degree dynamic (C/F)
+    - Dark mode
+    - Auto-detect location
+    - Dynamic UI elements based on current weather (sound effects/background)
+ * */

@@ -33,6 +33,10 @@ return [
 
     'openweather' => [
         'key' => env('OPEN_WEATHER_KEY')
+    ],
+
+    'geocoder' => [
+        'key' => env('GEOCODER_KEY')
     ]
 
 ];
