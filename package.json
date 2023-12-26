@@ -16,5 +16,8 @@
         "tailwindcss": "^3.2.1",
         "vite": "^5.0.0",
         "vue": "^3.2.41"
+    },
+    "dependencies": {
+        "@geoapify/geocoder-autocomplete": "^2.0.1"
     }
 }

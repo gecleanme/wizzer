@@ -1,6 +1,9 @@
 <script setup>
 import {Head} from '@inertiajs/vue3';
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
+import "@geoapify/geocoder-autocomplete/styles/round-borders.css";
+import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
+
 
 const props =defineProps({
     now: {
@@ -50,6 +53,26 @@ function dtToShort (dt){
     let options = { weekday:'short',month: 'short', day: 'numeric' };
     return d.toLocaleDateString('en-US', options);
 }
+
+//autocomplete field
+onMounted(()=>{
+    const autocomplete = new GeocoderAutocomplete(
+        document.getElementById("autocomplete"),
+        '92566a4ec0fa4347a7536d01222cee48',
+        {
+            type:"state"
+        });
+
+    autocomplete.on('select', (location) => {
+        // check selected location here
+    });
+
+    autocomplete.on('suggestions', (suggestions) => {
+        // process suggestions here
+    });
+
+})
+
 </script>
 
 <template>
@@ -58,6 +81,10 @@ function dtToShort (dt){
 
     <div
         class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200 ">
+
+        <div id="autocomplete" class="mb-4 p-2 w-1/3 mx-auto relative autocomplete-container"></div>
+
+
         <!-- Component Start -->
         <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
             <div class="flex justify-between">
@@ -85,7 +112,7 @@ function dtToShort (dt){
                 <span class="font-semibold text-lg w-1/4">{{dtToShort(day.dt_txt)}}</span>
                 <div class="flex items-center justify-end w-1/4 pr-10">
                     <span class="font-semibold">{{day.main.humidity}}%</span>
-                    <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1"
+                    <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20"
                          xmlns="http://www.w3.org/2000/svg">
                         <g transform="matrix(1,0,0,1,-4,-2)">
                             <path
