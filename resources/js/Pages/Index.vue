@@ -108,7 +108,22 @@ onMounted(()=>{
     <div
         class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200 ">
 
-        <div id="autocomplete" class="mb-8 w-1/3 mx-auto relative autocomplete-container"></div>
+        <div id="autocomplete" class="mb-8 w-full lg:w-1/3 mx-auto relative autocomplete-container"></div>
+
+        <div class="relative h-10 min-w-32">
+            <div class="absolute top-0 left-0 md:left-64 h-16 min-w-16">
+                <label class="relative inline-flex cursor-pointer">
+                    <input type="checkbox" value="" class="sr-only peer" :checked="showInF" @click="showInF=!showInF">
+                    <span class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></span>
+                    <span class="ms-3 text-sm font-medium">Fahrenheit</span>
+
+                </label>
+            </div>
+        </div>
+
+
+
+
 
 
         <!-- Component Start -->
