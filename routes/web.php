@@ -12,9 +12,9 @@ $position=null;
     $response = $client->request('GET', 'http://api.ipify.org');
     $publicIp = $response->getBody()->getContents();
     $position = Location::get($publicIp);
-    
+
 //else $position = Location::get(request()->ip());
-dump($position);
+//dump($position);
 $loc= "Amman, Jordan";
 
 if ($position && !request('location')) {
