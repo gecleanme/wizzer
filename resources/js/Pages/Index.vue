@@ -37,7 +37,7 @@ const fiveDay = () => {
     for (let day of props.fiveDay) {
         let currentDate = day.dt_txt
         let d = new Date(currentDate);
-        let options = { month: 'short', day: 'numeric' };
+        let options = { month: 'short', day: 'numeric'};
         let finalDate= d.toLocaleDateString('en-US', options);
         if (!uniqueDates.includes(finalDate)) {
             uniqueDates.push(finalDate);
@@ -56,6 +56,15 @@ function dtToShort (dt){
     return d.toLocaleDateString('en-US', options);
 }
 
+function dt2LocalT(){
+    const offsetSeconds = props.now.timezone; //api given
+    let nowUtc = Date.now() + new Date().getTimezoneOffset() * 60000;
+    let date = new Date(nowUtc + offsetSeconds * 1000);
+    return  date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12:true });
+}
+
+
+
 const toFahrenheit = (Ctemp) => {
     let temp = (Ctemp * 9/5) + 32;
     return temp.toFixed(0);
@@ -68,10 +77,50 @@ const shownTemp = (temp) => {
     return temp + '°C';
 }
 
+const timeNow = ref(dt2LocalT())
+
 watch(showInF, ()=> {
     shownTemp()
 })
 
+//weather background business starts
+
+let weatherIcon = ref(iconNow);
+
+let gradients = {
+    '01d.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '02d.png': 'bg-gradient-to-br from-blue-200 via-white to-blue-300',
+    '03d.png': 'bg-gradient-to-br from-blue-200 via-white to-blue-300',
+    '04d.png': 'bg-gradient-to-br from-gray-300 via-white to-gray-400',
+    '05d.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '06d.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '07d.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '08d.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '09d.png': 'bg-gradient-to-br from-blue-400 via-blue-300 to-gray-400',
+    '10d.png': 'bg-gradient-to-br from-blue-400 via-blue-300 to-gray-400',
+    '11d.png': 'bg-gradient-to-br from-gray-600 via-purple-700 to-gray-800',
+    '13d.png': 'bg-gradient-to-br from-blue-200 via-white to-gray-200',
+    '50d.png': 'bg-gradient-to-br from-gray-200 via-yellow-200 to-gray-400',
+
+
+    '01n.png': 'bg-gradient-to-br from-gray-800 via-blue-900 to-black',
+    '02n.png': 'bg-gradient-to-br from-blue-800 via-gray-800 to-blue-900',
+    '03n.png': 'bg-gradient-to-br from-blue-800 via-gray-800 to-blue-900',
+    '04n.png': 'bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900',
+    '05n.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '06n.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '07n.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '08n.png': 'bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200',
+    '09n.png': 'bg-gradient-to-br from-blue-800 via-blue-900 to-gray-800',
+    '10n.png': 'bg-gradient-to-br from-blue-800 via-blue-900 to-gray-800',
+    '11n.png': 'bg-gradient-to-br from-gray-800 via-purple-900 to-black',
+    '13n.png': 'bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900',
+    '50n.png': 'bg-gradient-to-br from-gray-700 via-gray-600 to-gray-800',
+
+
+};
+
+let currentGradient = computed(() => gradients[weatherIcon.value]);
 
 
 //autocomplete field
@@ -88,16 +137,10 @@ onMounted(()=>{
         });
 
     autocomplete.on('select', (location) => {
-
-        window.location.href = `?location=${(location.properties.address_line1)}`;
-
+        let urlParams;
+        location.properties.city ? urlParams = `${location.properties.city}, ${location.properties.state}, ${location.properties.country_code}` : urlParams = `${location.properties.state}, ${location.properties.country_code}`
+        window.location.href = `?location=${urlParams}`;
     });
-
-    autocomplete.on('suggestions', (suggestions) => {
-        // process suggestions here
-    });
-
-
 })
 </script>
 
@@ -105,8 +148,7 @@ onMounted(()=>{
 
     <Head title="Index"/>
 
-    <div
-        class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-200 via-gray-200 to-orange-200 ">
+    <div class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-400 via-blue-300 to-gray-400">
 
         <div id="autocomplete" class="mb-8 w-full lg:w-1/3 mx-auto relative autocomplete-container"></div>
 
@@ -121,31 +163,28 @@ onMounted(()=>{
             </div>
         </div>
 
-
-
-
-
-
         <!-- Component Start -->
-        <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+        <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40 opacity-80">
             <div class="flex justify-between">
                 <div class="flex flex-col">
                     <span class="text-6xl font-bold">{{ shownTemp(infoNow.temp.toFixed(0))}}</span>
                     <span class="font-semibold mt-1 text-gray-500">{{ now.name }}</span>
                     <span class="text-sm font-semibold text-gray-400">Feels like {{ shownTemp(infoNow.feels_like.toFixed(0)) }}</span>
-                    <span class="font-semibold text-md mt-4">Lw: {{ shownTemp(infoNow.temp_min.toFixed(0)) }} / Hi: {{ shownTemp(infoNow.temp_max.toFixed(0)) }}</span>
+                    <span class="font-semibold text-md mt-4">Lw: {{ shownTemp(infoNow.temp_min.toFixed(1)) }} / Hi: {{ shownTemp(infoNow.temp_max.toFixed(1)) }}</span>
 
 
                 </div>
                 <div class="flex flex-col">
                     <img :src="iconNow" alt="Icon" />
                     <span class="font-semibold mt-1 text-sm text-center overflow-auto">{{descNow}}</span>
+                    <span class="font-semibold mt-1 text-sm text-center overflow-auto">Local Time: {{ timeNow }}</span>
+
                 </div>
 
             </div>
         </div>
         <div
-            class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40">
+            class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40 opacity-80">
             <div class="flex justify-between items-center"
             v-for="(day,index) in fiveDays"
                  :key="index"

@@ -4,13 +4,17 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Stevebauman\Location\Facades\Location;
-
-//dev only
 use GuzzleHttp\Client;
-$client = new Client();
-$response = $client->request('GET', 'http://api.ipify.org');
-$publicIp = $response->getBody()->getContents();
-$position = Location::get($publicIp);
+
+$position=null;
+
+if (app()->environment('development') || app()->environment('local')) {
+    $client = new Client();
+    $response = $client->request('GET', 'http://api.ipify.org');
+    $publicIp = $response->getBody()->getContents();
+    $position = Location::get($publicIp);
+}
+else $position = Location::get(request()->ip());
 $loc= "Amman, Jordan";
 
 if ($position && !request('location')) {
@@ -34,7 +38,7 @@ Route::get('/', function () use ($loc) {
 /*
  * TODO:
     -  Layout
-    - Dark mode
-    - Dynamic UI elements based on current weather (sound effects/background)
+    - dynamic backgrounds /wip
+    - catch auto geolocation exception
     - Ref (AP)
  * */
