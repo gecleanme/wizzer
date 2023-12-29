@@ -15,6 +15,7 @@ if (app()->environment('development') || app()->environment('local')) {
     $position = Location::get($publicIp);
 }
 else $position = Location::get(request()->ip());
+dump($position);
 $loc= "Amman, Jordan";
 
 if ($position && !request('location')) {
