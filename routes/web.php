@@ -4,11 +4,17 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Stevebauman\Location\Facades\Location;
+use GuzzleHttp\Client;
 
+$position=null;
 
- $ip = request()->ip();
-
-$position = Location::get($ip);
+    $client = new Client();
+    $response = $client->request('GET', 'http://api.ipify.org');
+    $publicIp = $response->getBody()->getContents();
+    $position = Location::get($publicIp);
+    
+//else $position = Location::get(request()->ip());
+dump($position);
 $loc= "Amman, Jordan";
 
 if ($position && !request('location')) {
