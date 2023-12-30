@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Inertia\Inertia;
 use App\Services\LocationService;
 use App\Services\WeatherService;
@@ -18,15 +19,22 @@ class WeatherController extends Controller
         $this->weatherService = $weatherService;
     }
 
-    public function __invoke(): Response
+    public function __invoke(): Response|string
     {
-        $location = $this->locationService->getLocation();
-        $weatherNow = $this->weatherService->getCurrentWeather($location);
-        $weatherNextFiveData = $this->weatherService->getFiveDayForecast($location);
+        try {
 
-        return Inertia::render('Index',[
-            'now' => $weatherNow,
-            'fiveDay' => $weatherNextFiveData
-        ]);
+            $location = $this->locationService->getLocation();
+            $weatherNow = $this->weatherService->getCurrentWeather($location);
+            $weatherNextFiveData = $this->weatherService->getFiveDayForecast($location);
+
+            return Inertia::render('Index', [
+                'now' => $weatherNow,
+                'fiveDay' => $weatherNextFiveData
+            ]);
+        }
+
+        catch (Exception $e){
+           return $e->getMessage();
+        }
     }
 }
