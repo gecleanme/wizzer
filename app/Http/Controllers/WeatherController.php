@@ -34,6 +34,7 @@ class WeatherController extends Controller
         }
 
         catch (Exception $e){
+            //TODO: return error view
            return $e->getMessage();
         }
     }
