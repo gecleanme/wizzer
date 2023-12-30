@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ErrorPageException;
 use Exception;
-use Inertia\Inertia;
 use App\Services\LocationService;
 use App\Services\WeatherService;
 use Inertia\Response;
 
 class WeatherController extends Controller
 {
-    protected LocationService $locationService;
-    protected WeatherService $weatherService;
 
-    public function __construct(LocationService $locationService, WeatherService $weatherService)
+    public function __construct(protected readonly LocationService $locationService,protected readonly WeatherService $weatherService)
     {
-        $this->locationService = $locationService;
-        $this->weatherService = $weatherService;
     }
 
-    public function __invoke(): Response|string
+    /**
+     * @throws ErrorPageException
+     */
+    public function __invoke(): Response
     {
         try {
 
@@ -27,15 +26,18 @@ class WeatherController extends Controller
             $weatherNow = $this->weatherService->getCurrentWeather($location);
             $weatherNextFiveData = $this->weatherService->getFiveDayForecast($location);
 
-            return Inertia::render('Index', [
+            return inertia('Index', [
                 'now' => $weatherNow,
                 'fiveDay' => $weatherNextFiveData
             ]);
         }
 
         catch (Exception $e){
-            //TODO: return error view
-           return $e->getMessage();
+          throw new ErrorPageException(
+              data: [
+                  'title'=> 'Something went wrong'
+              ],code: 500,previous: $e
+          );
         }
     }
 }
