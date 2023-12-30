@@ -32,7 +32,8 @@ return [
     ],
 
     'openweather' => [
-        'key' => env('OPEN_WEATHER_KEY')
+        'key' => env('OPEN_WEATHER_KEY'),
+        'url' => env('OPEN_WEATHER_URL')
     ],
 
     'geocoder' => [
