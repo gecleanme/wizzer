@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Exceptions\ErrorPageException;
@@ -11,20 +13,17 @@ use Inertia\Response;
 class WeatherController extends Controller
 {
 
-    public function __construct(protected readonly LocationService $locationService,protected readonly WeatherService $weatherService)
-    {
-    }
 
     /**
      * @throws ErrorPageException
      */
-    public function __invoke(): Response
+    public function __invoke(LocationService $locationService,WeatherService $weatherService): Response
     {
         try {
 
-            $location = $this->locationService->getLocation();
-            $weatherNow = $this->weatherService->getCurrentWeather($location);
-            $weatherNextFiveData = $this->weatherService->getFiveDayForecast($location);
+            $location = $locationService->getLocation();
+            $weatherNow = $weatherService->getCurrentWeather($location);
+            $weatherNextFiveData = $weatherService->getFiveDayForecast($location);
 
             return inertia('Index', [
                 'now' => $weatherNow,

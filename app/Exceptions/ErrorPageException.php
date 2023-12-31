@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Exceptions;
 
 use Exception;
@@ -34,6 +34,6 @@ class ErrorPageException extends Exception
             'icon'=>$data['icon']??null,
             'type'=>$data['type']??null,
         ];
-        parent::__construct($data['title'], $code, $previous);
+        parent::__construct($this->error_data['title'], $code, $previous);
     }
 }
