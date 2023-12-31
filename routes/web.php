@@ -7,6 +7,5 @@ Route::get('/', WeatherController::class);
 
 /*
  * TODO:
-    -  Layout
     - refactor front-end
  * */
