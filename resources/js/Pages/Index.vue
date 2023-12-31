@@ -3,7 +3,7 @@ import {Head} from '@inertiajs/vue3';
 import {computed, onMounted, ref, watch} from "vue";
 import "@geoapify/geocoder-autocomplete/styles/round-borders.css";
 import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
-
+import Layout from "@/Layouts/Layout.vue";
 
 const props =defineProps({
     now: {
@@ -142,6 +142,13 @@ onMounted(()=>{
         window.location.href = `?location=${urlParams}`;
     });
 })
+
+</script>
+<script>
+export default {
+    layout: Layout,
+};
+
 </script>
 
 <template>
