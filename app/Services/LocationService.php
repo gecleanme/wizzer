@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
@@ -7,10 +7,10 @@ use Stevebauman\Location\Facades\Location;
 
 class LocationService
 {
-    public function getLocation()
+    public function getLocation():string
     {
         if (app()->environment('development') || app()->environment('local')) {
-            $response = Http::get('http://api.ipify.org');
+            $response = Http::get('https://api.ipify.org');
             $publicIp = $response->body();
             $position = Location::get($publicIp);
         } else {

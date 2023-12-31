@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -14,10 +15,14 @@ class WeatherService
         $this->apiKey = config('services.openweather.key');
     }
 
-    public function getCurrentWeather($location)
+    /**
+     * @param string $location
+     * @return mixed
+     */
+    public function getCurrentWeather(string $location): mixed
     {
-        return Cache::remember('weather.current.'.$location, 60, function () use ($location) {
-            $response = Http::get('http://api.openweathermap.org/data/2.5/weather', [
+        return Cache::remember("weather.current.$location", 60, function () use ($location) {
+            $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
                 'q' => $location,
                 'units' => 'metric',
                 'appid' => $this->apiKey
@@ -27,10 +32,14 @@ class WeatherService
     }
 
 
-    public function getFiveDayForecast($location)
+    /**
+     * @param string $location
+     * @return mixed
+     */
+    public function getFiveDayForecast(string $location): mixed
     {
-        return Cache::remember('weather.forecast.'.$location, 60, function () use ($location) {
-            $response = Http::get('http://api.openweathermap.org/data/2.5/forecast', [
+        return Cache::remember("weather.forecast.$location", 60, function () use ($location) {
+            $response = Http::get('https://api.openweathermap.org/data/2.5/forecast', [
                 'q' => $location,
                 'units' => 'metric',
                 'appid' => $this->apiKey
