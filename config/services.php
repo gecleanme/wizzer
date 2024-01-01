@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -33,11 +35,11 @@ return [
 
     'openweather' => [
         'key' => env('OPEN_WEATHER_KEY'),
-        'url' => env('OPEN_WEATHER_URL')
+        'url' => env('OPEN_WEATHER_URL'),
     ],
 
     'geocoder' => [
-        'key' => env('GEOCODER_KEY')
-    ]
+        'key' => env('GEOCODER_KEY'),
+    ],
 
 ];

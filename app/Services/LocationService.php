@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
@@ -18,9 +20,9 @@ class LocationService
             $position = Location::get($ip);
         }
 
-        $loc = "Amman, Jordan";
+        $loc = 'Amman, Jordan';
 
-        if ($position && !request('location')) {
+        if ($position && ! request('location')) {
             $loc = $position->cityName;
         } elseif (request()->location) {
             $loc = request()->location;
@@ -29,4 +31,3 @@ class LocationService
         return $loc;
     }
 }
-

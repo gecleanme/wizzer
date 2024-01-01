@@ -9,9 +9,6 @@ use Closure;
 if (! function_exists('runInDevelopment')) {
     /**
      * Run the provided closure only in development environment.
-     *
-     * @param  Closure  $callback
-     * @return mixed
      */
     function runInDevelopment(Closure $callback): mixed
     {

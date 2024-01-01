@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use Exception;
@@ -15,7 +17,8 @@ class ErrorPageException extends Exception
      *      type:string
      *  }
      */
-    public array $error_data=[];
+    public array $error_data = [];
+
     /**
      * @param array{
      *     title:string|null,
@@ -23,16 +26,14 @@ class ErrorPageException extends Exception
      *     icon:string|null,
      *     type:string
      * } $data
-     * @param int $code
-     * @param Throwable|null $previous
      */
     public function __construct(array $data, int $code = 0, ?Throwable $previous = null)
     {
-        $this->error_data=[
-            'title'=>$data['title']??null,
-            'description'=>$data['description']??null,
-            'icon'=>$data['icon']??null,
-            'type'=>$data['type']??null,
+        $this->error_data = [
+            'title' => $data['title'] ?? null,
+            'description' => $data['description'] ?? null,
+            'icon' => $data['icon'] ?? null,
+            'type' => $data['type'] ?? null,
         ];
         parent::__construct($data['title'], $code, $previous);
     }

@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Exceptions\ErrorPageException;
+use App\Services\{LocationService, WeatherService};
 use Exception;
-use App\Services\LocationService;
-use App\Services\WeatherService;
 use Inertia\Response;
 
 class WeatherController extends Controller
 {
-
-    public function __construct(protected readonly LocationService $locationService,protected readonly WeatherService $weatherService)
+    public function __construct(protected readonly LocationService $locationService, protected readonly WeatherService $weatherService)
     {
     }
 
@@ -28,16 +28,16 @@ class WeatherController extends Controller
 
             return inertia('Index', [
                 'now' => $weatherNow,
-                'fiveDay' => $weatherNextFiveData
+                'fiveDay' => $weatherNextFiveData,
             ]);
-        }
-
-        catch (Exception $e){
-          throw new ErrorPageException(
-              data: [
-                  'title'=> 'Something went wrong'
-              ],code: 500,previous: $e
-          );
+        } catch (Exception $e) {
+            throw new ErrorPageException(
+                data: [
+                    'title' => 'Something went wrong',
+                ],
+                code: 500,
+                previous: $e
+            );
         }
     }
 }
