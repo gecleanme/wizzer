@@ -11,13 +11,10 @@ class LocationService
 {
     public function getLocation()
     {
-        $loc = 'Amman, Jordan';
-
-        // exception for railway server request handling method
-        if (app()->environment('railway')) {
-            return $loc;
+        // exception for railway server request handling
+        if (app()->environment('railway') && ! request('location')) {
+            return $loc = 'Amman, Jordan';
         }
-
         if (app()->environment('development') || app()->environment('local')) {
             $response = Http::get('http://api.ipify.org');
             $publicIp = $response->body();
@@ -26,6 +23,8 @@ class LocationService
             $ip = request()->ip();
             $position = Location::get($ip);
         }
+
+        $loc = 'Amman, Jordan';
 
         if ($position && ! request('location')) {
             $loc = $position->cityName;
