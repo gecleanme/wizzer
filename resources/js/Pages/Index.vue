@@ -37,7 +37,7 @@ export default {
 </script>
 
 <template>
-    <Head title="Index" />
+    <Head title="Quick Weather" />
 
     <div
         class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-400 via-blue-300 to-gray-400"
