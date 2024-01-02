@@ -15,7 +15,7 @@ class WeatherService
         $this->apiKey = config('services.openweather.key');
     }
 
-    public function getCurrentWeather($location)
+    public function getCurrentWeather(string $location)
     {
         return Cache::remember('weather.current.' . $location, 60, function () use ($location) {
             $response = Http::get('http://api.openweathermap.org/data/2.5/weather', [
@@ -28,7 +28,7 @@ class WeatherService
         });
     }
 
-    public function getFiveDayForecast($location)
+    public function getFiveDayForecast(string $location)
     {
         return Cache::remember('weather.forecast.' . $location, 60, function () use ($location) {
             $response = Http::get('http://api.openweathermap.org/data/2.5/forecast', [
