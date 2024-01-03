@@ -2,8 +2,6 @@
 
 ## Weather in your city, fast and simple
 
-### Disclaimer: This cute toy was built to scratch an itch I'm having at work, it's not intended for public consumption in its current form
-
 ## Tech & Tools:
 
 -   Laravel (v10 base)
