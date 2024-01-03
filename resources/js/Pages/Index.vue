@@ -25,6 +25,7 @@ const {
     showInF,
     shownTemp,
     timeNow,
+    currentGradient,
 } = useWeather(props.now, props.fiveDay);
 </script>
 
@@ -40,7 +41,8 @@ export default {
     <Head title="Quick Weather" />
 
     <div
-        class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-blue-400 via-blue-300 to-gray-400"
+        class="flex flex-col items-center justify-center min-w-screen min-h-screen text-gray-700 p-10"
+        :style="'background:' + currentGradient"
     >
         <LocationAutocomplete
             class="mb-8 w-full lg:w-1/3 mx-auto relative autocomplete-container"
