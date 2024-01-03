@@ -35,7 +35,7 @@
 ## Clone the repo
 
 ```bash
-git clone https://github.com/gecleanme/linvoice.git
+git clone https://github.com/gecleanme/wizzer.git
 ```
 
 ### Install Dependencies
